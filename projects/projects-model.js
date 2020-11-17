@@ -27,6 +27,6 @@ function remove(id) {
     return db('projects').delete().where({ id })
 }
 
-function modify(id, project) {
-    return db('projects').where({ id }).update(project, "*")
+function modify(id, changes) {
+    return db('projects').where({ id }).update(changes, "*")
 }

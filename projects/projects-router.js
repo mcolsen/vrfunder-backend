@@ -26,13 +26,19 @@ router.get('/:id', restricted, (req, res) => {
 
 
 router.post('/', restricted, checkRole('fundraiser'), (req, res) => {
-    Projects.add(req.body)
-        .then(project => {
-            res.status(200).json(project)
-        })
-        .catch(err => {
-            res.status(500).json({ msg: err.message })
-        })
+    if (!req.body.pname || !req.body.description || !req.body.location || !req.body.goal || !req.body.image_url || !req.body.external_url || !req.body.fundraiser) {
+        res.json({ msg: "pname, description,location, goal, image_url, external_url, and fundraiser are required" })
+    }
+    else {
+
+        Projects.add(req.body)
+            .then(project => {
+                res.status(200).json(project)
+            })
+            .catch(err => {
+                res.status(500).json({ msg: err.message })
+            })
+    }
 })
 
 router.delete('/:id', restricted, checkRole('fundraiser'), (req, res) => {
@@ -49,16 +55,22 @@ router.delete('/:id', restricted, checkRole('fundraiser'), (req, res) => {
 })
 
 router.put('/:id', restricted, checkRole('fundraiser'), (req, res) => {
-    Projects.modify(req.params.id, req.body)
-        .then(count => {
-            if (count > 0)
-                res.status(200).json({ msg: "successfully changed" })
-            else
-                res.status(400).json({ msg: "error" })
-        })
-        .catch(err => {
-            res.status(500).json({ msg: err.message })
-        })
+    if (!req.body) {
+        res.json({ msg: "error" })
+    }
+    else {
+
+        Projects.modify(req.params.id, req.body)
+            .then(count => {
+                if (count > 0)
+                    res.status(200).json({ msg: "successfully changed" })
+                else
+                    res.status(400).json({ msg: "error" })
+            })
+            .catch(err => {
+                res.status(500).json({ msg: err.message })
+            })
+    }
 
 })
 module.exports = router
