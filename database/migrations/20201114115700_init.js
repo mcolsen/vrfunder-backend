@@ -24,6 +24,11 @@ exports.up = function (knex) {
                 tbl.increments();
                 tbl.string("pname", 128).notNullable().unique().index();
                 tbl.string("description", 16384).notNullable();
+                tbl.string("location").notNullable();
+                tbl.integer("goal").notNullable();
+                tbl.string("image_url").notNullable();
+                tbl.string("external_url").notNullable();
+                tbl.string("fundraiser").notNullable();
             })
 
 
@@ -35,5 +40,4 @@ exports.down = function (knex) {
         .dropTableIfExists("roles")
         .dropTableIfExists("users")
         .dropTableIfExists("projects")
-        .dropTableIfExists("donations");
 };
